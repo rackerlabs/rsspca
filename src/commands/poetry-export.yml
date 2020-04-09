@@ -1,0 +1,47 @@
+description: Export requirements from a poetry project
+parameters:
+  # Required
+  path:
+    description: Directory containing the pyproject.toml
+    type: string
+  output:
+    description: The name of the output file.
+    type: string
+
+
+  format:
+    description: Format to export to.
+    type: string
+    default: requirements.txt
+  without-hashes:
+    description: Exclude hashes from the exported file.
+    type: boolean
+    default: false
+  dev:
+    description: Include development dependencies.
+    type: boolean
+    default: false
+  with-credentials:
+    description: Include credentials for extra indices.
+    type: boolean
+    default: false
+  verbose:
+    description: 'Increase the verbosity of messages: "-v" for normal output, "-vv" for more verbose output and "-vvv" for debug'
+    type: string
+    default: ""
+  arbitrary_flags:
+    description: 'A set of arbitrary flags to pass to the command'
+    type: string
+    default: ""
+steps:
+  - run:
+      description: Exporting poetry requirements to << parameters.output >>
+      command: |
+        poetry export \
+        -f << parameters.format >> \
+        -o << parameters.output >> \
+        <<# parameters.without-hashes >> --without-hashes<</ parameters.without-hashes >> \
+        <<# parameters.dev >> --dev<</ parameters.dev >> \
+        <<# parameters.with-credentials >> --with-credentials<</ parameters.with-credentials >> \
+        << parameters.verbose >> \
+        << parameters.arbitrary_flags >>

@@ -1,0 +1,10 @@
+version: 2.1
+
+descrition: >
+  Rackspace Solutions and Services public circle automation
+
+display:
+  source_url: https://github.com/rackerlabs/rsspca
+
+orbs:
+  orb-tools: circleci/orb-tools@9.1
