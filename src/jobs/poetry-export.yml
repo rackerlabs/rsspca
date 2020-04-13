@@ -32,7 +32,7 @@ parameters:
       blank is provided then this job will not persist to a workspace.
     type: string
   workspace-root:
-    default: workspace
+    default: /home/circleci
     description: >
       Workspace root path that is either an absolute path or a path relative to
       the working directory.
@@ -102,4 +102,4 @@ steps:
         - persist_to_workspace:
             root: <<parameters.workspace-root>>
             paths:
-              - <<parameters.output>>
+              - <<parameters.workspace-path>>

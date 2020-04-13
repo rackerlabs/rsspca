@@ -1,0 +1,15 @@
+parameters:
+  terraform-version:
+    default: "0.12.24"
+    type: string
+  install-path:
+    type: string
+    default: /home/circleci/bin/
+steps:
+  - run:
+      name: Installing terraform version << parameters.terraform-version >> to << parameters.install-path >>
+      command: |
+        mkdir -p << parameters.install-path >>
+        wget -O /tmp/terraform.zip "https://releases.hashicorp.com/terraform/<< parameters.terraform-version >>/terraform_<< parameters.terraform-version >>_linux_amd64.zip"
+        unzip -d "<< parameters.install-path >>" /tmp/terraform.zip
+        << parameters.install-path >>/terraform -v

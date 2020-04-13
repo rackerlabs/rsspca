@@ -1,0 +1,6 @@
+parameters:
+  docker_tag:
+    type: string
+    default: light
+docker:
+  - image: hashicorp/terraform:<<parameters.docker_tag>>

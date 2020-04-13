@@ -1,0 +1,6 @@
+steps:
+  - checkout
+  - run:
+      name: Lint Terraform
+      command: terraform fmt -check=True -diff=True -recursive
+
