@@ -39,4 +39,11 @@ steps:
       command: |
         cd << parameters.path >>
 
-        poetry export -f << parameters.format >> -o << parameters.output >> <<# parameters.without-hashes >> --without-hashes<</ parameters.without-hashes >> <<# parameters.dev >> --dev<</ parameters.dev >> <<# parameters.with-credentials >> --with-credentials<</ parameters.with-credentials >> << parameters.verbose >> << parameters.arbitrary_flags >>
+        poetry export \
+        -f << parameters.format >> \
+        -o << parameters.output >> \
+        <<# parameters.without-hashes >> --without-hashes<</ parameters.without-hashes >> \
+        <<# parameters.dev >> --dev<</ parameters.dev >> \
+        <<# parameters.with-credentials >> --with-credentials<</ parameters.with-credentials >> \
+        << parameters.verbose >> \
+        << parameters.arbitrary_flags >>

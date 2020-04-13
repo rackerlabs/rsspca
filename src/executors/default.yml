@@ -10,4 +10,4 @@ parameters:
     type: string
 working_directory: << parameters.working_directory >>
 docker:
-    - image: circleci/python:<< parameters.docker_tag >>
+  - image: circleci/python:<< parameters.docker_tag >>
