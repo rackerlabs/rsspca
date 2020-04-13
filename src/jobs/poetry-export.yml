@@ -2,7 +2,7 @@ description: Export requirements from a poetry project
 parameters:
   executor:
     type: executor
-    default: circleci/python:3.6
+    default: default
   attach-workspace:
     default: true
     description: >

@@ -1,0 +1,13 @@
+parameters:
+  docker_tag:
+    default: "3.6"
+    type: string
+  pipenv_venv_in_project:
+    default: true
+    type: boolean
+  working_directory:
+    default: ~/src
+    type: string
+working_directory: << parameters.working_directory >>
+docker:
+    - image: circleci/python:<< parameters.docker_tag >>
