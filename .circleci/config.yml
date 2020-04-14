@@ -81,9 +81,11 @@ workflows:
       # e.g. [semver:patch] will cause a patch version to be published.
       - orb-tools/dev-promote-prod-from-commit-subject:
           orb-name: rackerlabs/rsspca
-          add-pr-comment: false
-          publish-version-tag: false
+          add-pr-comment: true
+          publish-version-tag: true
           fail-if-semver-not-indicated: false
+          bot-user: racker-autobot
+          ssh-fingerprints: "5c:13:24:90:7e:0f:c9:d5:f7:16:55:3e:86:d9:5b:64"
           requires:
             - integration-tests-for-your-orb
 #          filters:
