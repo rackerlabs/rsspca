@@ -1,4 +1,4 @@
-description: Install the terraform binary
+description: Install the sops binary
 parameters:
   executor:
     type: executor
@@ -23,8 +23,8 @@ parameters:
     description: |
       Boolean to persist requirements file to the workspace
     type: boolean
-  terraform-version:
-    default: "0.12.24"
+  version:
+    default: "v3.5.0"
     type: string
   workspace-root:
     default: /home/circleci
@@ -43,13 +43,13 @@ steps:
       steps:
         - attach_workspace:
             at: <<parameters.workspace-root>>
-  - terraform-install:
+  - sops-install:
       install-path: <<parameters.workspace-root>>/<<parameters.install-path>>
-      terraform-version: <<parameters.terraform-version>>
+      version: <<parameters.version>>
   - when:
       condition: <<parameters.persist-to-workspace>>
       steps:
         - persist_to_workspace:
             root: <<parameters.workspace-root>>
             paths:
-              - <<parameters.install-path>>terraform
+              - <<parameters.install-path>>/sops

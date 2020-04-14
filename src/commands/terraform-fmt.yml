@@ -1,0 +1,37 @@
+description: Run terraform fmt
+parameters:
+  check:
+    type: boolean
+    default: True
+    description: |
+      Check if the input is formatted. Exit status will be 0 if all
+      input is properly formatted and non-zero otherwise.
+  diff:
+    type: boolean
+    default: true
+    description: |
+      Display diffs of formatting changes
+  no-color:
+    type: boolean
+    default: false
+    description: |
+      If specified, output won't contain any color.
+  recursive:
+    type: boolean
+    default: true
+    description: |
+      Also process files in subdirectories. By default, only the
+      given directory (or current directory) is processed.
+  terraform-executable:
+    type: string
+    default: terraform
+    description: name or path to terraform executable
+steps:
+  - run:
+      name: Lint Terraform
+      command: |
+        <<parameters.terraform-executable>> fmt
+        <<# parameters.check >> -check<</ parameters.check >> \
+        <<# parameters.diff >> -diff<</ parameters.diff >> \
+        <<# parameters.recursive >> -recursive<</ parameters.recursive >> \
+        <<# parameters.no-color >> -no-color<</ parameters.no-color >>

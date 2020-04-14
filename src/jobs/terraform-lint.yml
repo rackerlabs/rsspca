@@ -1,3 +1,0 @@
-executor: terraform
-steps:
-  - terraform-lint

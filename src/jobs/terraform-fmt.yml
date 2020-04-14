@@ -1,0 +1,47 @@
+description: Run terraform fmt
+parameters:
+  executor:
+    type: executor
+    default: terraform
+  checkout:
+    default: true
+    description: |
+      Boolean for whether or not to checkout as a first step. Default is false.
+    type: boolean
+  check:
+    type: boolean
+    default: True
+    description: |
+      Check if the input is formatted. Exit status will be 0 if all
+      input is properly formatted and non-zero otherwise.
+  diff:
+    type: boolean
+    default: true
+    description: |
+      Display diffs of formatting changes
+  no-color:
+    type: boolean
+    default: false
+    description: |
+      If specified, output won't contain any color.
+  recursive:
+    type: boolean
+    default: true
+    description: |
+      Also process files in subdirectories. By default, only the
+      given directory (or current directory) is processed.
+  terraform-executable:
+    type: string
+    default: terraform
+executor: <<parameters.executor>>
+steps:
+  - when:
+      condition: <<parameters.checkout>>
+      steps:
+        - checkout
+  - terraform-fmt:
+      check: <<parameters.check>>
+      diff: <<parameters.diff>>
+      no-color: <<parameters.no-color>>
+      recursive: <<parameters.recursive>>
+      terraform-executable: <<parameters.terraform-executable>>
