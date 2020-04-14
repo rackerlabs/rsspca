@@ -88,24 +88,8 @@ workflows:
           ssh-fingerprints: "5c:13:24:90:7e:0f:c9:d5:f7:16:55:3e:86:d9:5b:64"
           requires:
             - integration-tests-for-your-orb
-#          filters:
-#            branches:
-#              only: master
+          filters:
+            branches:
+              only: master
 
 
-#  integration-tests_prod-release:
-#    when: << pipeline.parameters.run-integration-tests >>
-#    jobs:
-#      - integration-tests-for-your-orb
-#      - orb-tools/dev-promote-prod-from-commit-subject:
-#          orb-name: rackerlabs/rsspca
-#          add-pr-comment: true
-#          publish-version-tag: true
-#          bot-user: racker-autobot
-#          fail-if-semver-not-indicated: false
-#          ssh-fingerprints: "5c:13:24:90:7e:0f:c9:d5:f7:16:55:3e:86:d9:5b:64"
-##          requires:
-##            - integration-tests-for-your-orb
-#          filters:
-#            branches:
-#              only: master
