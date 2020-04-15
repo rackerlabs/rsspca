@@ -1,0 +1,63 @@
+parameters:
+  # Required
+  path:
+    description: Directory containing the pyproject.toml
+    type: string
+
+  dependencies:
+    type: string
+    default: ""
+  executor:
+    type: executor
+    default: python
+  attach-workspace:
+    default: true
+    description: >
+      Boolean for whether or not to attach to an existing workspace. Default is
+      true.
+    type: boolean
+  checkout:
+    default: true
+    description: |
+      Boolean for whether or not to checkout as a first step. Default is false.
+    type: boolean
+  persist-to-workspace:
+    default: true
+    description: |
+      Boolean to persist requirements file to the workspace
+    type: boolean
+  workspace-path:
+    default: orb.yml
+    description: >
+      Path of the workspace to persist to relative to workspace-root. Typically
+      this is the same as the destination-orb-path. If the default value of
+      blank is provided then this job will not persist to a workspace.
+    type: string
+  workspace-root:
+    default: /home/circleci
+    description: >
+      Workspace root path that is either an absolute path or a path relative to
+      the working directory.
+    type: string
+executor: <<parameters.executor>>
+steps:
+  - setup_remote_docker
+  - when:
+      condition: <<parameters.checkout>>
+      steps:
+        - checkout
+  - when:
+      condition: <<parameters.attach-workspace>>
+      steps:
+        - attach_workspace:
+            at: <<parameters.workspace-root>>
+  - poetry-run:
+      path: << parameters.path >>
+      command: "fleece build --python36 <<# parameters.dependencies >> --dependencies <<parameters.dependencies>><</ parameters.dependencies>> ."
+  - when:
+      condition: <<parameters.persist-to-workspace>>
+      steps:
+        - persist_to_workspace:
+            root: <<parameters.workspace-root>>
+            paths:
+              - <<parameters.workspace-path>>
