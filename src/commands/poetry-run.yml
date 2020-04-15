@@ -1,0 +1,35 @@
+description: Run a command inside a given poetry env
+parameters:
+  # Required
+  path:
+    description: Directory containing the pyproject.toml
+    type: string
+  command:
+    description: Command to run
+    type: string
+  # Optional
+  verbose:
+    description: 'Increase the verbosity of messages: "-v" for normal output, "-vv" for more verbose output and "-vvv" for debug'
+    type: enum
+    default: ""
+    enum: ["", "-v", "-vv", "-vvv"]
+  arbitrary_flags:
+    description: 'A set of arbitrary flags to pass to the command'
+    type: string
+    default: ""
+  no-interaction:
+    description: Do not ask any interactive question
+    type: boolean
+    default: true
+
+steps:
+  - run:
+      description: Install dependencies from << parameters.path >>
+      working_directory: << parameters.path >>
+      command: |
+        poetry \
+        <<# parameters.no-interaction >> --no-interaction<</ parameters.no-interaction >> \
+        << parameters.verbose >> \
+        << parameters.arbitrary_flags >> \
+        run \
+        << parameters.command >>

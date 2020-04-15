@@ -2,7 +2,7 @@ description: Export requirements from a poetry project
 parameters:
   executor:
     type: executor
-    default: default
+    default: python
   attach-workspace:
     default: true
     description: >
@@ -10,7 +10,7 @@ parameters:
       true.
     type: boolean
   checkout:
-    default: false
+    default: true
     description: |
       Boolean for whether or not to checkout as a first step. Default is false.
     type: boolean
@@ -65,7 +65,8 @@ parameters:
     default: false
   verbose:
     description: 'Increase the verbosity of messages: "-v" for normal output, "-vv" for more verbose output and "-vvv" for debug'
-    type: string
+    type: enum
+    enum: ["", "-v", "-vv", "-vvv"]
     default: ""
   arbitrary_flags:
     description: 'A set of arbitrary flags to pass to the command'
@@ -95,7 +96,7 @@ steps:
       condition: <<parameters.store-artifact>>
       steps:
         - store_artifacts:
-            path: <<parameters.output>>
+            path: <<parameters.workspace-root>>/<<parameters.workspace-path>>
   - when:
       condition: <<parameters.persist-to-workspace>>
       steps:

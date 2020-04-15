@@ -1,0 +1,50 @@
+description: Install dependencies for a given pyproject.toml
+parameters:
+  # Required
+  path:
+    description: Directory containing the pyproject.toml
+    type: string
+
+  # Optional
+  no-dev:
+    description: Do not install the development dependencies.
+    type: boolean
+    default: false
+  no-root:
+    description: Do not install the root package (the current project).
+    type: boolean
+    default: false
+  dry-run:
+    description: Output the operations but do not execute anything (implicitly enables --verbose).
+    type: boolean
+    default: false
+  verbose:
+    description: 'Increase the verbosity of messages: "-v" for normal output, "-vv" for more verbose output and "-vvv" for debug'
+    type: enum
+    default: ""
+    enum: ["", "-v", "-vv", "-vvv"]
+  arbitrary_flags:
+    description: 'A set of arbitrary flags to pass to the command'
+    type: string
+    default: ""
+  extras:
+    description: Extra sets of dependencies to install. (multiple values allowed) "mysql pgsql"
+    type: string
+    default: ""
+  no-interaction:
+    description: Do not ask any interactive question
+    type: boolean
+    default: true
+steps:
+  - run:
+      description: Install dependencies from << parameters.path >>
+      working_directory: << parameters.path >>
+      command: |
+        poetry install \
+        <<# parameters.no-dev >> --no-dev<</ parameters.no-dev >> \
+        <<# parameters.no-root >> --no-root<</ parameters.no-root >> \
+        <<# parameters.dry-run >> --dry-run<</ parameters.dry-run >> \
+        <<# parameters.no-interaction >> --no-interaction<</ parameters.no-interaction >> \
+        <<# parameters.extras >> -E "<<parameters.extras>>" <</ parameters.extras >> \
+        << parameters.verbose >> \
+        << parameters.arbitrary_flags >>

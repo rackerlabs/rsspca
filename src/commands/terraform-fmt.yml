@@ -30,7 +30,7 @@ steps:
   - run:
       name: Lint Terraform
       command: |
-        <<parameters.terraform-executable>> fmt
+        <<parameters.terraform-executable>> fmt \
         <<# parameters.check >> -check<</ parameters.check >> \
         <<# parameters.diff >> -diff<</ parameters.diff >> \
         <<# parameters.recursive >> -recursive<</ parameters.recursive >> \

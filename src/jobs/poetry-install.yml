@@ -1,0 +1,120 @@
+description: Export requirements from a poetry project
+parameters:
+  # Required
+  path:
+    description: Directory containing the pyproject.toml
+    type: string
+
+  # Optional
+  no-dev:
+    description: Do not install the development dependencies.
+    type: boolean
+    default: false
+  no-root:
+    description: Do not install the root package (the current project).
+    type: boolean
+    default: false
+  dry-run:
+    description: Output the operations but do not execute anything (implicitly enables --verbose).
+    type: boolean
+    default: false
+  verbose:
+    description: 'Increase the verbosity of messages: "-v" for normal output, "-vv" for more verbose output and "-vvv" for debug'
+    type: enum
+    default: ""
+    enum: ["", "-v", "-vv", "-vvv"]
+  arbitrary_flags:
+    description: 'A set of arbitrary flags to pass to the command'
+    type: string
+    default: ""
+  extras:
+    description: Extra sets of dependencies to install. (multiple values allowed) "mysql pgsql"
+    type: string
+    default: ""
+  no-interaction:
+    description: Do not ask any interactive question
+    type: boolean
+    default: true
+
+  executor:
+    type: executor
+    default: python
+  attach-workspace:
+    default: true
+    description: >
+      Boolean for whether or not to attach to an existing workspace. Default is
+      true.
+    type: boolean
+  checkout:
+    default: true
+    description: |
+      Boolean for whether or not to checkout as a first step. Default is false.
+    type: boolean
+  persist-to-workspace:
+    default: true
+    description: |
+      Boolean to persist requirements file to the workspace
+    type: boolean
+  workspace-path:
+    default: orb.yml
+    description: >
+      Path of the workspace to persist to relative to workspace-root. Typically
+      this is the same as the destination-orb-path. If the default value of
+      blank is provided then this job will not persist to a workspace.
+    type: string
+  workspace-root:
+    default: /home/circleci
+    description: >
+      Workspace root path that is either an absolute path or a path relative to
+      the working directory.
+    type: string
+  restore-cache:
+    description: |
+      Save the venv to cache
+    type: boolean
+    default: true
+  save-cache:
+    description: |
+      Save the venv to cache
+    type: boolean
+    default: true
+executor: <<parameters.executor>>
+steps:
+  - when:
+      condition: <<parameters.checkout>>
+      steps:
+        - checkout
+  - when:
+      condition: <<parameters.attach-workspace>>
+      steps:
+        - attach_workspace:
+            at: <<parameters.workspace-root>>
+  - when:
+      condition: <<parameters.restore-cache>>
+      steps:
+        - restore_cache:
+            keys:
+              - v1-{{.Environment.CIRCLE_CACHE_NUMBER}}-poetry-install-cache-{{checksum "<<parameters.path>>/poetry.lock"}}
+  - poetry-install:
+      path: << parameters.path >>
+      no-dev: << parameters.no-dev >>
+      no-root: << parameters.no-root >>
+      dry-run: << parameters.dry-run >>
+      no-interaction: << parameters.no-interaction >>
+      extras: << parameters.extras >>
+      verbose: << parameters.verbose >>
+      arbitrary_flags: << parameters.arbitrary_flags >>
+  - when:
+      condition: <<parameters.save-cache>>
+      steps:
+        - save_cache:
+            key: v1-{{.Environment.CIRCLE_CACHE_NUMBER}}-poetry-install-cache-{{checksum "<<parameters.path>>/poetry.lock"}}
+            paths:
+              - <<parameters.path>>/.venv
+  - when:
+      condition: <<parameters.persist-to-workspace>>
+      steps:
+        - persist_to_workspace:
+            root: <<parameters.workspace-root>>
+            paths:
+              - <<parameters.workspace-path>>

@@ -5,6 +5,3 @@ descrition: >
 
 display:
   source_url: https://github.com/rackerlabs/rsspca
-
-orbs:
-  orb-tools: circleci/orb-tools@9.1

@@ -27,7 +27,8 @@ parameters:
     default: false
   verbose:
     description: 'Increase the verbosity of messages: "-v" for normal output, "-vv" for more verbose output and "-vvv" for debug'
-    type: string
+    type: enum
+    enum: ["", "-v", "-vv", "-vvv"]
     default: ""
   arbitrary_flags:
     description: 'A set of arbitrary flags to pass to the command'
@@ -36,9 +37,8 @@ parameters:
 steps:
   - run:
       description: Exporting poetry requirements to << parameters.output >>
+      working_directory: << parameters.path >>
       command: |
-        cd << parameters.path >>
-
         poetry export \
         -f << parameters.format >> \
         -o << parameters.output >> \
