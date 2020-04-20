@@ -3,7 +3,7 @@ parameters:
     default: "3.6"
     type: string
   working_directory:
-    default: ~/src
+    default: /home/circleci/src
     type: string
 working_directory: << parameters.working_directory >>
 docker:

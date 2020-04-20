@@ -63,11 +63,16 @@ parameters:
       blank is provided then this job will not persist to a workspace.
     type: string
   workspace-root:
-    default: /home/circleci
+    default: /home/circleci/
     description: >
       Workspace root path that is either an absolute path or a path relative to
       the working directory.
     type: string
+  workspace-root-to-working-directory:
+    type: string
+    default: src/
+    description: >
+      The relative difference between workspace-root and the working directory
   restore-cache:
     description: |
       Save the venv to cache
@@ -117,4 +122,4 @@ steps:
         - persist_to_workspace:
             root: <<parameters.workspace-root>>
             paths:
-              - <<parameters.workspace-path>>
+              - <<parameters.workspace-root-to-working-directory>><<parameters.path>>/.venv/*

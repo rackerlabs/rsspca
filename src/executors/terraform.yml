@@ -2,5 +2,9 @@ parameters:
   docker_tag:
     type: string
     default: light
+  working_directory:
+    type: string
+    default: /home/circleci/src
 docker:
   - image: hashicorp/terraform:<<parameters.docker_tag>>
+working_directory: << parameters.working_directory >>
