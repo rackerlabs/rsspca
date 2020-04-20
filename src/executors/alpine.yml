@@ -13,4 +13,8 @@ parameters:
       - large
       - xlarge
     type: enum
+  working_directory:
+    default: /home/circleci/src
+    type: string
 resource_class: <<parameters.resource-class>>
+working_directory: << parameters.working_directory >>
