@@ -1,4 +1,4 @@
-description: "Export an environment variable between steps and jobs"
+description: "Export an environment variable between steps"
 parameters:
   environment-variable:
     type: string
