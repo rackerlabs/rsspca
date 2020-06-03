@@ -7,4 +7,4 @@ parameters:
 steps:
   - run:
       name: "Exporting <<parameters.key>> to $BASH_ENV"
-      command: echo "export << parameters.key >>=<< parameters.value >>" "$BASH_ENV"
+      command: echo "export << parameters.environment-variable >>=<< parameters.value >>" "$BASH_ENV"
