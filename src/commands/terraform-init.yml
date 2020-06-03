@@ -2,12 +2,6 @@ description: "Run Terraform init"
 parameters:
   path:
     type: string
-  bucket:
-    type: string
-  service:
-    type: string
-  stage:
-    type: string
   terraform-executable:
     type: string
     default: terraform
