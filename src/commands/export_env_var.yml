@@ -1,0 +1,10 @@
+description: "Export an environment variable between steps and jobs"
+parameters:
+  key:
+    type: string
+  value:
+    type: string
+steps:
+  - run:
+      name: "Exporting <<parameters.key>> to $BASH_ENV"
+      command: echo "export << parameters.key >>=<< parameters.value >>" $BASH_ENV
