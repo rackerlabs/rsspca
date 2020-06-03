@@ -24,4 +24,3 @@ steps:
         <<parameters.terraform-executable>> init \
         -input=false \
         << parameters.arbitrary_flags >>
-

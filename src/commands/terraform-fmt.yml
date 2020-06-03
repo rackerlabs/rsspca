@@ -1,8 +1,8 @@
-description: Run terraform fmt
+description: "Run terraform fmt"
 parameters:
   check:
     type: boolean
-    default: True
+    default: true
     description: |
       Check if the input is formatted. Exit status will be 0 if all
       input is properly formatted and non-zero otherwise.
