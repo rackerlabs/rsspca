@@ -1,4 +1,4 @@
-desctiption: "Run terraform plan"
+description: "Run terraform plan"
 parameters:
   path:
     type: string
@@ -18,7 +18,7 @@ steps:
       name: Terraform plan of <<parameters.path>>
       working_directory: <<parameters.path>>
       command: |
-        <<terraform-executable>> plan \
+        <<parameters.terraform-executable>> plan \
         -input=false \
         << parameters.arbitrary_flags >> \
         -out=<<parameters.out>>
