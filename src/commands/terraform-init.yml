@@ -1,0 +1,27 @@
+description: "Run Terraform init"
+parameters:
+  path:
+    type: string
+  bucket:
+    type: string
+  service:
+    type: string
+  stage:
+    type: string
+  terraform-executable:
+    type: string
+    default: terraform
+    description: name or path to terraform executable
+  arbitrary_flags:
+    description: 'A set of arbitrary flags to pass to the command'
+    type: string
+    default: ""
+steps:
+  - run:
+      name: Terraform init
+      working_directory: << parameters.path >>
+      command: |
+        <<parameters.terraform-executable>> init \
+        -input=false \
+        << parameters.arbitrary_flags >>
+
