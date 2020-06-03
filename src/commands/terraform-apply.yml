@@ -15,10 +15,10 @@ parameters:
     default: ""
 steps:
   - run:
-    name: Terraform apply of << parameters.path >>
-    working_directory: << parameters.path >>
-    command: |
-      <<parameters.terraform-executable>> apply \
-      -auto-approve \
-      << parameters.arbitrary_flags >> \
-      <<parameters.plan>>
+      name: Terraform apply of << parameters.path >>
+      working_directory: << parameters.path >>
+      command: |
+        <<parameters.terraform-executable>> apply \
+        -auto-approve \
+        << parameters.arbitrary_flags >> \
+        <<parameters.plan>>

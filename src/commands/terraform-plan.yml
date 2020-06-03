@@ -1,3 +1,4 @@
+desctiption: "Run terraform plan"
 parameters:
   path:
     type: string
