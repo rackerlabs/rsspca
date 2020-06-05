@@ -1,0 +1,24 @@
+description: "Run Terraform apply"
+parameters:
+  path:
+    type: string
+  plan:
+    type: string
+    default: terraform.plan
+  terraform-executable:
+    type: string
+    default: terraform
+    description: name or path to terraform executable
+  arbitrary-flags:
+    description: 'A set of arbitrary flags to pass to the command'
+    type: string
+    default: ""
+steps:
+  - run:
+      name: Terraform apply of << parameters.path >>
+      working_directory: << parameters.path >>
+      command: |
+        <<parameters.terraform-executable>> apply \
+        -auto-approve \
+        << parameters.arbitrary-flags >> \
+        <<parameters.plan>>

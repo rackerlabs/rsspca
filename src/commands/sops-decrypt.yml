@@ -1,0 +1,21 @@
+description: "Run sops decrypt"
+parameters:
+  input:
+    type: string
+  output:
+    type: string
+  sops-executable:
+    type: string
+    default: sops
+    description: name or path to terraform executable
+  arbitrary-flags:
+    description: 'A set of arbitrary flags to pass to the command'
+    type: string
+    default: ""
+steps:
+  - run:
+      name: "Sops decrypt <<parameters.input>> to <<parameters.output>>"
+      command: |
+        <<parameters.sops-executable>> -d \
+        <<parameters.arbitrary-flags>> \
+        <<parameters.input>> > <<parameters.output>>

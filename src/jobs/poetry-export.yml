@@ -74,7 +74,7 @@ parameters:
     type: enum
     enum: ["", "-v", "-vv", "-vvv"]
     default: ""
-  arbitrary_flags:
+  arbitrary-flags:
     description: 'A set of arbitrary flags to pass to the command'
     type: string
     default: ""
@@ -97,7 +97,7 @@ steps:
       dev: << parameters.dev >>
       with-credentials: << parameters.with-credentials >>
       verbose: << parameters.verbose >>
-      arbitrary_flags: << parameters.arbitrary_flags >>
+      arbitrary-flags: << parameters.arbitrary-flags >>
   - when:
       condition: <<parameters.store-artifact>>
       steps:

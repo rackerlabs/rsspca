@@ -30,7 +30,7 @@ parameters:
     type: enum
     enum: ["", "-v", "-vv", "-vvv"]
     default: ""
-  arbitrary_flags:
+  arbitrary-flags:
     description: 'A set of arbitrary flags to pass to the command'
     type: string
     default: ""
@@ -46,4 +46,4 @@ steps:
         <<# parameters.dev >> --dev<</ parameters.dev >> \
         <<# parameters.with-credentials >> --with-credentials<</ parameters.with-credentials >> \
         << parameters.verbose >> \
-        << parameters.arbitrary_flags >>
+        << parameters.arbitrary-flags >>

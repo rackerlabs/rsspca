@@ -1,10 +1,10 @@
 parameters:
   terraform-version:
-    default: "0.12.25"
+    default: "0.12.26"
     type: string
   install-path:
     type: string
-    default: /home/circleci/bin/
+    default: /home/circleci/.local/bin/
 steps:
   - run:
       name: Installing terraform version << parameters.terraform-version >> to << parameters.install-path >>
