@@ -55,7 +55,7 @@ steps:
       value: "${AWS_ACCOUNT_ID}-terraform"
   - export-env-var:
       environment-variable: TERRAFORM_BUCKET_REGION
-      value: "<<parameters.s3-region>>"
+      value: "${AWS_REGION}"
   - export-env-var:
       environment-variable: TERRAFORM_KEY
       value: "<<parameters.service>>/<<parameters.stage>>/terraform.tfstate"
