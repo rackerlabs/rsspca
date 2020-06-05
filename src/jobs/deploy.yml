@@ -53,9 +53,9 @@ steps:
   - export-env-var:
       environment-variable: TERRAFORM_BUCKET
       value: "${AWS_ACCOUNT_ID}-terraform"
-  - export-env-var:
-      environment-variable: TERRAFORM_BUCKET_REGION
-      value: "${AWS_REGION}"
+#  - export-env-var:
+#      environment-variable: TERRAFORM_BUCKET_REGION
+#      value: "${AWS_REGION}"
   - export-env-var:
       environment-variable: TERRAFORM_KEY
       value: "<<parameters.service>>/<<parameters.stage>>/terraform.tfstate"
@@ -64,7 +64,7 @@ steps:
   - bootstrap-terraform-bucket
   - terraform-init:
       path: << parameters.path >>
-      arbitrary-flags: '-backend-config="bucket=$TERRAFORM_BUCKET" -backend-config="key=${TERRAFORM_KEY} -backend-config=region=${TERRAFORM_BUCKET_REGION}"'
+      arbitrary-flags: '-backend-config="bucket=$TERRAFORM_BUCKET" -backend-config="key=${TERRAFORM_KEY}"'
   - terraform-plan:
       path: << parameters.path >>
       arbitrary-flags: '-var "stage=<<parameters.stage>>"'
