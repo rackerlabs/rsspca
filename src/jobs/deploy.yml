@@ -21,7 +21,7 @@ parameters:
       Override executor with a custom executor, for example, to choose a
       different version tag.
     type: executor
-  s3-region:
+  terraform-bucket-region:
     type: string
     default: us-east-1
 executor: << parameters.executor >>
@@ -55,7 +55,7 @@ steps:
       value: "${AWS_ACCOUNT_ID}-terraform"
   - export-env-var:
       environment-variable: TERRAFORM_BUCKET_REGION
-      value: "${AWS_REGION}"
+      value: "<<parameters.terraform-bucket-region>>"
   - export-env-var:
       environment-variable: TERRAFORM_KEY
       value: "<<parameters.service>>/<<parameters.stage>>/terraform.tfstate"
@@ -64,7 +64,7 @@ steps:
   - bootstrap-terraform-bucket
   - terraform-init:
       path: << parameters.path >>
-      arbitrary-flags: '-backend-config="bucket=$TERRAFORM_BUCKET" -backend-config="key=${TERRAFORM_KEY}" -backend-config="region=us-east-1"'
+      arbitrary-flags: '-backend-config="bucket=${TERRAFORM_BUCKET}" -backend-config="key=${TERRAFORM_KEY}" -backend-config="region=${TERRAFORM_BUCKET_REGION}"'
   - terraform-plan:
       path: << parameters.path >>
       arbitrary-flags: '-var "stage=<<parameters.stage>>"'
