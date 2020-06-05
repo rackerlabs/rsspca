@@ -5,7 +5,7 @@ parameters:
     default: TERRAFORM_BUCKET
   terraform-bucket-region-env-var:
     type: env_var_name
-    default: TERRAFORM_BUCKET_REGION
+    default: AWS_REGION
 steps:
   - run:
       name: Bootstrap Terraform
