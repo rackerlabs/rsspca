@@ -1,15 +1,17 @@
 description: "Bootstrap bucket for terraform state"
 parameters:
-  service:
-    type: string
-  stage:
-    type: string
+  terraform-bucket-env-var:
+    type: env_var_name
+    default: TERRAFORM_BUCKET
+  terraform-bucket-region-env-var:
+    type: env_var_name
+    default: TERRAFORM_BUCKET_REGION
 steps:
   - run:
       name: Bootstrap Terraform
       command: |
-        BUCKET="<< parameters.service >>-terraform-state-<< parameters.stage >>"
-
+        BUCKET="${<<parameters.terraform-bucket-env-var>>}"
+        BUCKET_REGION="${<<parameters.terraform-bucket-region-env-var>>}"
         log () {
           echo -e "\e[1m==> $*\e[0m"
         }
@@ -21,9 +23,9 @@ steps:
         if ! aws s3api head-bucket --bucket "$BUCKET" >/dev/null 2>&1
         then
           log "Terraform state file S3 bucket ${BUCKET} does not exist."
-          log "Creating s3://${BUCKET} in ${AWS_REGION}..."
+          log "Creating s3://${BUCKET} in ${BUCKET_REGION}..."
 
-          if ! aws s3 mb s3://"$BUCKET" --region "$AWS_REGION"
+          if ! aws s3 mb s3://"$BUCKET" --region "$BUCKET_REGION"
           then
             error "Error creating s3://${BUCKET}. Exiting."
             exit 1

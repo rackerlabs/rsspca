@@ -1,0 +1,72 @@
+description: "Basic deploy job"
+parameters:
+  # Required
+  service:
+    type: string
+  stage:
+    type: string
+  path:
+    type: string
+
+  # Optional
+  aws-access-key-id-env-var:
+    default: AWS_ACCESS_KEY_ID
+    type: env_var_name
+  aws-secret-access-key-env-var:
+    default: AWS_SECRET_ACCESS_KEY
+    type: env_var_name
+  executor:
+    default: python
+    description: |
+      Override executor with a custom executor, for example, to choose a
+      different version tag.
+    type: executor
+  s3-region:
+    type: string
+    default: us-east-1
+executor: << parameters.executor >>
+steps:
+  - checkout
+  - attach_workspace:
+      at: /home/circleci
+  - aws-cli/setup:
+      aws-access-key-id: << parameters.aws-access-key-id-env-var >>
+      aws-region: AWS_REGION
+      aws-secret-access-key: << parameters.aws-secret-access-key-env-var >>
+
+  # Dependencies install
+  - terraform-install:
+      install-path: /home/circleci/.local/bin/
+  - sops-install:
+      install-path: /home/circleci/.local/bin/
+
+  # Secrets
+  - sops-decrypt:
+      input: << parameters.path >>/secrets.<< parameters.stage >>.tfvars.json
+      output: << parameters.path >>/secrets.auto.tfvars.json
+
+  # Setup Environment Variables
+  - export-aws-account-id
+  - export-env-var:
+      environment-variable: TF_VAR_version
+      value: '${CIRCLE_SHA1:-"0.0.0"}'
+  - export-env-var:
+      environment-variable: TERRAFORM_BUCKET
+      value: "${AWS_ACCOUNT_ID}-terraform"
+  - export-env-var:
+      environment-variable: TERRAFORM_BUCKET_REGION
+      value: "<<parameters.s3-region>>"
+  - export-env-var:
+      environment-variable: TERRAFORM_KEY
+      value: "<<parameters.service>>/<<parameters.stage>>/terraform.tfstate"
+
+  # Terraform bits
+  - bootstrap-terraform-bucket
+  - terraform-init:
+      path: << parameters.path >>
+      arbitrary-flags: '-backend-config="bucket=$TERRAFORM_BUCKET" -backend-config="key=${TERRAFORM_KEY} -backend-config=region=${TERRAFORM_BUCKET_REGION}"'
+  - terraform-plan:
+      path: << parameters.path >>
+      arbitrary-flags: '-var "stage=<<parameters.stage>>"'
+  - terraform-apply:
+      path: << parameters.path >>

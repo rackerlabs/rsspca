@@ -1,0 +1,6 @@
+description: "Export currently configured account id to AWS_ACCOUNT_ID"
+steps:
+  - run:
+      command: |
+        AWS_ACCOUNT_ID=$(aws sts get-caller-identity --output text --query "Account")
+        echo "export AWS_ACCOUNT_ID=${AWS_ACCOUNT_ID}" >> "$BASH_ENV"
