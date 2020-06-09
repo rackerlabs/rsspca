@@ -24,7 +24,7 @@ parameters:
       Boolean to persist requirements file to the workspace
     type: boolean
   terraform-version:
-    default: "0.12.24"
+    default: "0.12.26"
     type: string
   workspace-root:
     default: /home/circleci
