@@ -9,6 +9,13 @@ parameters:
     type: string
 
   # Optional
+  fleece-run-to-env:
+    type: boolean
+    default: false
+  use-sops:
+    type: boolean
+    default: true
+
   aws-access-key-id-env-var:
     default: AWS_ACCESS_KEY_ID
     type: env_var_name
@@ -29,21 +36,28 @@ steps:
   - checkout
   - attach_workspace:
       at: /home/circleci
+  - when:
+      condition: <<parameters.fleece-run-to-env>>
+      steps:
+        - fleece-run-to-env:
+            stage: <<parameters.stage>>
+            path: <<parameters.path>>
   - aws-cli/setup:
       aws-access-key-id: << parameters.aws-access-key-id-env-var >>
       aws-region: AWS_REGION
       aws-secret-access-key: << parameters.aws-secret-access-key-env-var >>
 
-  # Dependencies install
   - terraform-install:
       install-path: /home/circleci/.local/bin/
-  - sops-install:
-      install-path: /home/circleci/.local/bin/
 
-  # Secrets
-  - sops-decrypt:
-      input: << parameters.path >>/secrets.<< parameters.stage >>.tfvars.json
-      output: << parameters.path >>/secrets.auto.tfvars.json
+  - when:
+      condition: <<parameters.use-sops>>
+      steps:
+        - sops-install:
+            install-path: /home/circleci/.local/bin/
+        - sops-decrypt:
+            input: << parameters.path >>/secrets.<< parameters.stage >>.tfvars.json
+            output: << parameters.path >>/secrets.auto.tfvars.json
 
   # Setup Environment Variables
   - export-aws-account-id

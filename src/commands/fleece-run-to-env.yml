@@ -1,0 +1,12 @@
+description: "Use fleece run to export AWS environment variables to environment"
+parameters:
+  stage:
+    type: string
+  path:
+    type: string
+steps:
+  - poetry-run:
+      path: <<parameters.path>>
+      command: |
+        fleece run -c ../../environments.yml -e <<parameters.stage>> \
+        'echo "export AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}" >> "$BASH_ENV" && echo "export AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}" >> "$BASH_ENV" &&echo "export AWS_SESSION_TOKEN=${AWS_SESSION_TOKEN}" >> "$BASH_ENV"'
