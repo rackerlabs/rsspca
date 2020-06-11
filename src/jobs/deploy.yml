@@ -9,6 +9,10 @@ parameters:
     type: string
 
   # Optional
+  fleece-run-to-env:
+    type: boolean
+    default: false
+
   aws-access-key-id-env-var:
     default: AWS_ACCESS_KEY_ID
     type: env_var_name
@@ -29,6 +33,12 @@ steps:
   - checkout
   - attach_workspace:
       at: /home/circleci
+  - when:
+      condition: <<parameters.fleece-run-to-env>>
+      steps:
+        - fleece-run-to-env:
+            stage: <<parameters.stage>>
+            path: <<parameters.path>>
   - aws-cli/setup:
       aws-access-key-id: << parameters.aws-access-key-id-env-var >>
       aws-region: AWS_REGION
