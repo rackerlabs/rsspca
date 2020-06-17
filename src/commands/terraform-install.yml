@@ -12,4 +12,4 @@ steps:
         mkdir -p << parameters.install-path >>
         wget -O /tmp/terraform.zip "https://releases.hashicorp.com/terraform/<< parameters.terraform-version >>/terraform_<< parameters.terraform-version >>_linux_amd64.zip"
         unzip -d "<< parameters.install-path >>" /tmp/terraform.zip
-        << parameters.install-path >>/terraform -v
+        << parameters.install-path >>/terraform version
