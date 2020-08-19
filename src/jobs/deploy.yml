@@ -15,6 +15,11 @@ parameters:
   use-sops:
     type: boolean
     default: true
+  config:
+    type: string
+    default: "../../environments.yml"
+    description: >
+      -c option for fleece run
 
   aws-access-key-id-env-var:
     default: AWS_ACCESS_KEY_ID
@@ -42,6 +47,7 @@ steps:
         - fleece-run-to-env:
             stage: <<parameters.stage>>
             path: <<parameters.path>>
+            config: <<parameters.config>>
   - aws-cli/setup:
       aws-access-key-id: << parameters.aws-access-key-id-env-var >>
       aws-region: AWS_REGION

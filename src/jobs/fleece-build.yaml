@@ -7,6 +7,23 @@ parameters:
   dependencies:
     type: string
     default: ""
+    description: >
+      comma separated list of system dependencies
+  source:
+    type: string
+    default: ""
+    description: >
+      source directory to include in lambda_function.zip
+  requirements:
+    type: string
+    default: ""
+    description: >
+      requirements.txt file with dependencies
+  service_dir:
+    type: string
+    default: "."
+    description: >
+      directory where the service is located
   executor:
     type: executor
     default: python
@@ -58,7 +75,12 @@ steps:
             at: <<parameters.workspace-root>>
   - poetry-run:
       path: << parameters.path >>
-      command: "fleece build --python36 <<# parameters.dependencies >> --dependencies <<parameters.dependencies>><</ parameters.dependencies>> ."
+      command: |
+        fleece build --python36 \
+        <<# parameters.dependencies >> --dependencies <<parameters.dependencies>><</ parameters.dependencies>> \
+        <<# parameters.source >> --source << parameters.source >><</ parameters.source >> \
+        <<# parameters.requirements >> --requirements << parameters.requirements >><</ parameters.requirements >> \
+        << parameters.service_dir >>
   - when:
       condition: <<parameters.persist-to-workspace>>
       steps:
