@@ -7,4 +7,4 @@ parameters:
     default: /home/circleci/src
 machine:
   image: ubuntu-1604:<< parameters.tag >>
-working_directory:  << parameters.working_directory >>
+working_directory: << parameters.working_directory >>
