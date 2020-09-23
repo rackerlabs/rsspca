@@ -1,0 +1,13 @@
+description: Run sam build --use-container
+parameters:
+  # Required
+  path:
+    description: Directory containing the template.yaml
+    type: string
+
+steps:
+  - run:
+      description: Runs sam build from << parameters.path >>
+      working_directory: << parameters.path >>
+      command: |
+        sam build --use-container

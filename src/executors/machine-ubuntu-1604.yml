@@ -1,0 +1,10 @@
+parameters:
+  tag:
+    type: string
+    default: 202007-01
+  working_directory:
+    type: string
+    default: /home/circleci/src
+machine:
+  image: ubuntu-1604:<< parameters.tag >>
+working_directory:  << parameters.working_directory >>
