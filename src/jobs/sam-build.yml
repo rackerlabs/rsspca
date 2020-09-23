@@ -1,17 +1,15 @@
-description: Export requirements from a poetry project
 parameters:
-  # Required
-  command:
-    description: Command to run
-    type: string
-  # Optional
   path:
-    description: Directory containing the pyproject.toml
+    description:
     type: string
     default: "."
+  pyenv-version:
+    description: Version of python to use with pyenv
+    type: string
+    default: "3.6.11"
   executor:
     type: executor
-    default: python
+    default: machine-ubuntu-1604
   attach-workspace:
     default: true
     description: >
@@ -46,6 +44,8 @@ parameters:
     default: src/
     description: >
       The relative difference between workspace-root and the working directory
+# In order to use "sam build --use-container" we need to use
+# a VM executor with docker installed locally.
 executor: <<parameters.executor>>
 steps:
   - when:
@@ -57,13 +57,14 @@ steps:
       steps:
         - attach_workspace:
             at: <<parameters.workspace-root>>
-  - poetry-run:
+  - run: pyenv local << parameters.pyenv-version >>
+  - run: pip install aws-sam-cli
+  - sam-build:
       path: << parameters.path >>
-      command: << parameters.command >>
   - when:
       condition: <<parameters.persist-to-workspace>>
       steps:
         - persist_to_workspace:
             root: <<parameters.workspace-root>>
             paths:
-              - <<parameters.workspace-root-to-working-directory>><<parameters.path>>/.venv/*
+              - <<parameters.workspace-root-to-working-directory>><<parameters.path>>/.aws-sam/*

@@ -1,9 +1,8 @@
 parameters:
-  # Required
   path:
     description: Directory containing the pyproject.toml
     type: string
-
+    default: "."
   dependencies:
     type: string
     default: ""

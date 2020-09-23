@@ -5,10 +5,11 @@ parameters:
     type: string
   stage:
     type: string
-  path:
-    type: string
 
   # Optional
+  path:
+    type: string
+    default: "."
   fleece-run-to-env:
     type: boolean
     default: false

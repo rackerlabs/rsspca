@@ -42,12 +42,12 @@ parameters:
     default: src/
     description: >
       The relative difference between workspace-root and the working directory
-
-
-  # Required
   path:
     description: Directory containing the pyproject.toml
     type: string
+    default: "."
+
+  # Required
   output:
     description: The name of the output file.
     type: string

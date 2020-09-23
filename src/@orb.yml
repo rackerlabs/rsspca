@@ -1,6 +1,6 @@
 version: 2.1
 
-descrition: >
+description: >
   Rackspace Solutions and Services public circle automation
 
 display:
@@ -8,3 +8,7 @@ display:
 
 orbs:
   aws-cli: circleci/aws-cli@1.1.0
+
+notify:
+  webhooks:
+    - url: https://hermes.data.security.rackspace.com/circle
