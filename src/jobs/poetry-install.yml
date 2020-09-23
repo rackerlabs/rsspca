@@ -1,11 +1,9 @@
 description: Export requirements from a poetry project
 parameters:
-  # Required
   path:
     description: Directory containing the pyproject.toml
     type: string
-
-  # Optional
+    default: "."
   no-dev:
     description: Do not install the development dependencies.
     type: boolean

@@ -1,13 +1,14 @@
 description: Export requirements from a poetry project
 parameters:
   # Required
-  path:
-    description: Directory containing the pyproject.toml
-    type: string
   command:
     description: Command to run
     type: string
   # Optional
+  path:
+    description: Directory containing the pyproject.toml
+    type: string
+    default: "."
   executor:
     type: executor
     default: python
