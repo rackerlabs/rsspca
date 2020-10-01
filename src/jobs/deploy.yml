@@ -28,6 +28,9 @@ parameters:
   aws-secret-access-key-env-var:
     default: AWS_SECRET_ACCESS_KEY
     type: env_var_name
+  aws-region:
+    default: AWS_REGION
+    type: env_var_name
   executor:
     default: python
     description: |
@@ -51,7 +54,7 @@ steps:
             config: <<parameters.config>>
   - aws-cli/setup:
       aws-access-key-id: << parameters.aws-access-key-id-env-var >>
-      aws-region: AWS_REGION
+      aws-region: << parameters.aws-region >>
       aws-secret-access-key: << parameters.aws-secret-access-key-env-var >>
 
   - terraform-install:
