@@ -1,0 +1,6 @@
+extends: default
+
+rules:
+  line-length:
+    ignore: |
+      src/commands/fleece-run-to-env.yml
