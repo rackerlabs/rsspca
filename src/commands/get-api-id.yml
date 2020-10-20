@@ -1,0 +1,12 @@
+description: "Get API_ID"
+parameters:
+  stage:
+    type: string
+steps:
+  - run:
+      name: Get API_ID
+      command: |
+        API_GATEWAY_ID=$(terraform output -json| jq -r .api_id.value)
+        API_ID="${API_GATEWAY_ID}:<< parameters.stage >>"
+        echo "export API_ID=\"${API_ID}\"" >> "$BASH_ENV"
+        echo "API Gateway ID: ${API_ID}"
