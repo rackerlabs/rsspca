@@ -35,12 +35,22 @@ parameters:
     description: Do not ask any interactive question
     type: boolean
     default: true
+  virtualenv-in-project:
+    description: Ensures poetry's local config creates the virtualenv in the project directory
+    type: boolean
+    default: true
 steps:
+  - run:
+      description: Set virtualenv to exist in project root
+      when:
+        condition: << parameters.virtualenv-in-project >>
+      working_directory: << parameters.path >>
+      command: |
+        poetry config --local virtualenvs.in-project true
   - run:
       description: Install dependencies from << parameters.path >>
       working_directory: << parameters.path >>
       command: |
-        poetry config --local virtualenvs.in-project true
         poetry install \
         <<# parameters.no-dev >> --no-dev<</ parameters.no-dev >> \
         <<# parameters.no-root >> --no-root<</ parameters.no-root >> \
