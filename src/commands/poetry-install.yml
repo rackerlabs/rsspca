@@ -40,6 +40,7 @@ steps:
       description: Install dependencies from << parameters.path >>
       working_directory: << parameters.path >>
       command: |
+        poetry config --local virtualenvs.in-project true
         poetry install \
         <<# parameters.no-dev >> --no-dev<</ parameters.no-dev >> \
         <<# parameters.no-root >> --no-root<</ parameters.no-root >> \
