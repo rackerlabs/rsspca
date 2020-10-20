@@ -71,6 +71,10 @@ parameters:
     default: src/
     description: >
       The relative difference between workspace-root and the working directory
+  virtualenv-in-project:
+    description: Ensures poetry's local config creates the virtualenv in the project directory
+    type: boolean
+    default: true
   restore-cache:
     description: |
       Save the venv to cache
@@ -107,6 +111,7 @@ steps:
       extras: << parameters.extras >>
       verbose: << parameters.verbose >>
       arbitrary-flags: << parameters.arbitrary-flags >>
+      virtualenv-in-project: << parameters.virtualenv-in-project >>
   - when:
       condition: <<parameters.save-cache>>
       steps:
