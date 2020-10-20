@@ -43,7 +43,7 @@ steps:
   - when:
       condition: << parameters.virtualenv-in-project >>
       steps:
-        -run:
+        - run:
             description: Set virtualenv to exist in project root
             working_directory: << parameters.path >>
             command: |
