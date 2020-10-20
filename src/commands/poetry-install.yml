@@ -40,13 +40,14 @@ parameters:
     type: boolean
     default: true
 steps:
-  - run:
-      description: Set virtualenv to exist in project root
-      when:
-        condition: << parameters.virtualenv-in-project >>
-      working_directory: << parameters.path >>
-      command: |
-        poetry config --local virtualenvs.in-project true
+  - when:
+      condition: << parameters.virtualenv-in-project >>
+      steps:
+        - run:
+            description: Set virtualenv to exist in project root
+            working_directory: << parameters.path >>
+            command: |
+              poetry config --local virtualenvs.in-project true
   - run:
       description: Install dependencies from << parameters.path >>
       working_directory: << parameters.path >>
