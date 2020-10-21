@@ -2,9 +2,12 @@ description: "Get API_ID"
 parameters:
   stage:
     type: string
+  path:
+    type: string
 steps:
   - run:
       name: Get API_ID
+      working_directory: << parameters.path >>
       command: |
         API_GATEWAY_ID=$(terraform output -json| jq -r .api_id.value)
         API_ID="${API_GATEWAY_ID}:<< parameters.stage >>"

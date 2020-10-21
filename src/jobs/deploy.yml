@@ -120,6 +120,7 @@ steps:
         - run: echo done
         - get-api-id:
             stage: <<parameters.stage>>
+            path: <<parameters.path>>
         - get-rax-token
         - update-gatekeeper-policy:
             stage: <<parameters.stage>>
