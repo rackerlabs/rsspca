@@ -40,6 +40,9 @@ parameters:
   terraform-bucket-region:
     type: string
     default: us-east-1
+  user-deploy:
+    type: boolean
+    default: false
 executor: << parameters.executor >>
 steps:
   - checkout
@@ -71,6 +74,18 @@ steps:
 
   # Setup Environment Variables
   - export-aws-account-id
+  - when:
+      condition: <<parameters.user-deploy>>
+      steps:
+        - export-env-var:
+            environment-variable: STAGE
+            value: '${CIRCLE_PR_USERNAME:-$CIRCLE_USERNAME}'
+  - unless:
+      condition: <<parameters.user-deploy>>
+      steps:
+        - export-env-var:
+            environment-variable: STAGE
+            value: '<<parameters.stage>>'
   - export-env-var:
       environment-variable: TF_VAR_version
       value: '${CIRCLE_SHA1:-"0.0.0"}'
@@ -82,7 +97,7 @@ steps:
       value: "<<parameters.terraform-bucket-region>>"
   - export-env-var:
       environment-variable: TERRAFORM_KEY
-      value: "<<parameters.service>>/<<parameters.stage>>/terraform.tfstate"
+      value: "<<parameters.service>>/${STAGE}/terraform.tfstate"
 
   # Terraform bits
   - bootstrap-terraform-bucket
@@ -91,6 +106,6 @@ steps:
       arbitrary-flags: '-backend-config="bucket=${TERRAFORM_BUCKET}" -backend-config="key=${TERRAFORM_KEY}" -backend-config="region=${TERRAFORM_BUCKET_REGION}"'
   - terraform-plan:
       path: << parameters.path >>
-      arbitrary-flags: '-var "stage=<<parameters.stage>>"'
+      arbitrary-flags: '-var "stage=${STAGE}"'
   - terraform-apply:
       path: << parameters.path >>
