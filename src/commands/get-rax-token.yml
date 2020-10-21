@@ -16,4 +16,5 @@ steps:
         << parameters.output-env-var >>=$(curl -f -s -H "Content-Type: application/json" -X POST \
         -d '{"auth":{"RAX-KSKEY:apiKeyCredentials":{"username":"'${<< parameters.username-env-var>>}'","apiKey":"'${<< parameters.apikey-env-var >>}'"}}}' \
         https://identity.api.rackspacecloud.com/v2.0/tokens \
-        | jq -r .access.token.id) >> "$BASH_ENV"
+        | jq -r .access.token.id)
+        echo "export << parameters.output-env-var >>=${<< parameters.output-env-var >>}" >> "$BASH_ENV"
