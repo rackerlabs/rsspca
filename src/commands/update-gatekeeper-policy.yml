@@ -1,0 +1,38 @@
+description: "Update Gatekeeper Policy"
+parameters:
+  stage:
+    type: string
+  api-id-env-var:
+    type: env_var_name
+    default: API_ID
+  rax_token-env-var:
+    type: env_var_name
+    default: RAX_TOKEN
+  path:
+    type: string
+  policy-file:
+    type: string
+    default: policy.json
+steps:
+  - run:
+      name: "Update Gatekeeper Policy"
+      working_directory: << parameters.path >>
+      command: |
+        if [ -f "<< parameters.policy-file >>" ]; then
+            API_POLICY=$(jq -c '. + {api_id:"'${<<parameters.api-id-env-var>>}'"}' < <<parameters.policy-file>>)
+            echo "API Policy: ${API_POLICY}"
+
+            echo "Updating policy in Gatekeeper..."
+            if [[ "<< parameters.stage >>" == "prod" ]]; then
+                GATEKEEPER_API="https://gatekeeper-new.digital.rackspace.com"
+            else
+                GATEKEEPER_API="https://gatekeeper-new.dev.digital.rackspace.com"
+            fi
+
+            curl -f -H "Content-Type: application/json" -H "x-auth-token: ${<< parameters.rax_token-env-var >>}" \
+            -X POST -d ${API_POLICY} ${GATEKEEPER_API}/admin/policies
+        else
+            echo "No policy found at << parameters.policy-file >>."
+            exit 1
+        fi
+

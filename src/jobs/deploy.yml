@@ -21,6 +21,9 @@ parameters:
     default: "../../environments.yml"
     description: >
       -c option for fleece run
+  update-gatekeeper-policy:
+    type: boolean
+    default: false
 
   aws-access-key-id-env-var:
     default: AWS_ACCESS_KEY_ID
@@ -109,3 +112,16 @@ steps:
       arbitrary-flags: '-var "stage=${STAGE}"'
   - terraform-apply:
       path: << parameters.path >>
+
+  # Update gatekeeper policy
+  - when:
+      condition: <<parameters.update-gatekeeper-policy>>
+      steps:
+        - run: echo done
+        - get-api-id:
+            stage: <<parameters.stage>>
+            path: <<parameters.path>>
+        - get-rax-token
+        - update-gatekeeper-policy:
+            stage: <<parameters.stage>>
+            path: <<parameters.path>>/gateway
