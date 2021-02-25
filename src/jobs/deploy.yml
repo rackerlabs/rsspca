@@ -121,7 +121,7 @@ steps:
       condition: <<parameters.update-gatekeeper-policy>>
       steps:
         - get-api-id:
-            stage: <<parameters.stage>>
+            stage: "${STAGE}"
             path: <<parameters.path>>
         - get-rax-token
         - update-gatekeeper-policy:
