@@ -1,0 +1,23 @@
+description: "Select a terraform workspace"
+parameters:
+  path:
+    type: string
+  terraform-executable:
+    type: string
+    default: terraform
+    description: name or path to terraform executable
+  workspace-name:
+    type: string
+    default: dev
+  arbitrary-flags:
+    description: 'A set of arbitrary flags to pass to the command'
+    type: string
+    default: ""
+steps:
+  - run:
+      name: Terraform workspace select <<parameters.workspace-name>> in <<parameters.path>>
+      working_directory: <<parameters.path>>
+      command: |
+        <<parameters.terraform-executable>> workspace \
+        select << parameters.workspace-name >> \
+        << parameters.arbitrary-flags >>
