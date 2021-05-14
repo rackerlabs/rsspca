@@ -99,7 +99,7 @@ steps:
       environment-variable: TF_VAR_version
       value: '${CIRCLE_SHA1:-"0.0.0"}'
   - export-env-var:
-      environment-variable: TF_VAR_version_tag  # Newer versiona of Terraform have reserved "version" for internal use.
+      environment-variable: TF_VAR_version_tag  # Newer versions of Terraform have reserved "version" for internal use.
       value: '${CIRCLE_SHA1:-"0.0.0"}'
   - export-env-var:
       environment-variable: TERRAFORM_BUCKET
