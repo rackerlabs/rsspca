@@ -27,6 +27,9 @@ parameters:
   terraform-version:
     type: string
     default: "0.12.26"
+  plan-only:
+    type: boolean
+    default: false
 
   aws-access-key-id-env-var:
     default: AWS_ACCESS_KEY_ID
@@ -119,8 +122,12 @@ steps:
   - terraform-plan:
       path: << parameters.path >>
       arbitrary-flags: '-var "stage=${STAGE}"'
-  - terraform-apply:
-      path: << parameters.path >>
+  - when:
+      condition:
+        not: <<parameters.plan-only>>
+      steps:
+        - terraform-apply:
+            path: << parameters.path >>
 
   # Update gatekeeper policy
   - when:
