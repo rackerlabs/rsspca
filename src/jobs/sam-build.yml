@@ -9,7 +9,7 @@ parameters:
     default: "3.6.11"
   executor:
     type: executor
-    default: machine-ubuntu-1604
+    default: machine-ubuntu
   attach-workspace:
     default: true
     description: >
