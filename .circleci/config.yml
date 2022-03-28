@@ -4,12 +4,12 @@ version: 2.1
 #  orb-tools: circleci/orb-tools@9.1
 #  rsspca: rackerlabs/rsspca@<<pipeline.parameters.dev-orb-version>>
 
-orb_prep_jobs: &orb_prep_jobs
-  [
-    orb-tools/lint,
-    orb-tools/shellcheck,
-    orb-tools/pack
-  ]
+#orb_prep_jobs: &orb_prep_jobs
+#  [
+#    orb-tools/lint,
+#    orb-tools/shellcheck,
+#    orb-tools/pack
+#  ]
 
 # Pipeline parameters
 parameters:
@@ -23,10 +23,10 @@ parameters:
     default: "dev:alpha"
 
 jobs:
-  integration-tests-for-your-orb:
-    executor: orb-tools/ubuntu
-    steps:
-      - checkout
+  #integration-tests-for-your-orb:
+  #  executor: orb-tools/ubuntu
+  #  steps:
+  #    - checkout
     # Test your orb e.g.
     # - your-orb/your-orb-command
 
@@ -36,28 +36,28 @@ workflows:
     jobs:
       # This `lint-pack_validate_publish-dev` workflow will run on any commit
       # Lint your YAML
-      - orb-tools/lint
+      #- orb-tools/lint
       # Linting for BASH commands
-      - orb-tools/shellcheck:
-          exclude: "SC1009,SC1073"
+      #- orb-tools/shellcheck:
+      #    exclude: "SC1009,SC1073"
       # Pack the orb into a single file and validate the result.
-      - orb-tools/pack
+      #- orb-tools/pack
       # release dev version of orb, for testing & possible publishing.
       # orb will be published as dev:alpha and dev:${CIRCLE_SHA1:0:7}.
       # requires a CircleCI API token to be stored as CIRCLE_TOKEN (default)
       # https://circleci.com/docs/2.0/managing-api-tokens
       # store CIRCLE_TOKEN as a project env var or Contexts resource
       # if using Contexts, add your context below
-      - orb-tools/publish-dev:
-          orb-name: rackerlabs/rsspca
-          requires: *orb_prep_jobs
+      #- orb-tools/publish-dev:
+      #    orb-name: rackerlabs/rsspca
+      #    requires: *orb_prep_jobs
 
       # trigger an integration workflow to test the
       # dev:${CIRCLE_SHA1:0:7} version of your orb
-      - orb-tools/trigger-integration-tests-workflow:
-          name: trigger-integration-dev
-          requires:
-            - orb-tools/publish-dev
+      #- orb-tools/trigger-integration-tests-workflow:
+      #    name: trigger-integration-dev
+      #    requires:
+      #      - orb-tools/publish-dev
 
   # This `integration-tests_prod-release` workflow will only run
   # when the run-integration-tests pipeline parameter is set to true.
