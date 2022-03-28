@@ -31,11 +31,6 @@ jobs:
     # - your-orb/your-orb-command
 
 workflows:
-  test_python_commands:
-    jobs:
-      steps:
-        - checkout
-        - run: pyenv versions
   lint_pack-validate_publish-dev:
     unless: << pipeline.parameters.run-integration-tests >>
     jobs:
