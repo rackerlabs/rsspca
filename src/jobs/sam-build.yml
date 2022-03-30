@@ -9,7 +9,7 @@ parameters:
     default: "3.6.11"
   executor:
     type: executor
-    default: machine-ubuntu-1604
+    default: machine-ubuntu
   attach-workspace:
     default: true
     description: >
@@ -57,6 +57,7 @@ steps:
       steps:
         - attach_workspace:
             at: <<parameters.workspace-root>>
+  - run: pyenv install << parameters.pyenv-version >>
   - run: pyenv local << parameters.pyenv-version >>
   - run: pip install aws-sam-cli
   - sam-build:
