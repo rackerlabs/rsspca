@@ -57,6 +57,7 @@ steps:
       steps:
         - attach_workspace:
             at: <<parameters.workspace-root>>
+  - run: pyenv install << parameters.pyenv-version >>
   - run: pyenv local << parameters.pyenv-version >>
   - run: pip install aws-sam-cli
   - sam-build:
