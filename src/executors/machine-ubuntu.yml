@@ -1,7 +1,7 @@
 parameters:
   tag:
     type: string
-    default: 202101-01
+    default: 202201-02
   working_directory:
     type: string
     default: /home/circleci/src
