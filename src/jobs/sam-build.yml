@@ -6,7 +6,7 @@ parameters:
   pyenv-version:
     description: Version of python to use with pyenv
     type: string
-    default: "3.6.11"
+    default: "3.8.12"
   executor:
     type: executor
     default: machine-ubuntu
