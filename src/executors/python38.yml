@@ -1,0 +1,10 @@
+parameters:
+  docker_tag:
+    default: "3.8.12"
+    type: string
+  working_directory:
+    default: /home/circleci/src
+    type: string
+working_directory: << parameters.working_directory >>
+docker:
+  - image: cimg/python:<< parameters.docker_tag >>
