@@ -1,0 +1,9 @@
+description: "Update default path with custom bin location"
+parameters:
+  custom-bin-location:
+    type: string
+    default: /home/circleci/.local/bin
+steps:
+  - run:
+      name: Exporting PATH the proper way
+      command: echo 'export PATH=${PATH}:<< parameters.custom-bin-location >>' >> "$BASH_ENV"

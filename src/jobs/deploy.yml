@@ -71,9 +71,7 @@ steps:
 
   - terraform-install:
       terraform-version: <<parameters.terraform-version>>
-  - export-env-var:
-      environment-variable: PATH
-      value: "${PATH}:/home/circleci/.local/bin"
+  - update-default-path
 
   - when:
       condition: <<parameters.use-sops>>
