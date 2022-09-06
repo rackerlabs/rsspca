@@ -1,0 +1,18 @@
+description: Download an artifact from a previous build job
+parameters:
+  path:
+    type: string
+  build-job-name:
+    type: string
+    description: |
+      This must be set to the name of the job that built the artifact we would
+      like to use in subsequent steps.
+steps:
+  - run:
+      name: Query CircleCI API for artifacts from the current build
+      command: |
+        BUILD_JOB_NUMBER=`curl -H "Circle-Token: ${CIRCLE_TOKEN}" https://circleci.com/api/v2/workflow/${CIRCLE_WORKFLOW_ID}/job | jq '.items[] | select( .name == "<<parameters.build-job-name>>" ) | .job_number '`
+        echo "Build job number: ${BUILD_JOB_NUMBER}"
+        ARTIFACT_URL=`curl -H "Circle-Token: ${CIRCLE_TOKEN}" https://circleci.com/api/v2/project/gh/${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}/${BUILD_JOB_NUMBER}/artifacts | jq -r ' .items[0].url '`
+        echo "Downloading artifact from URL: ${ARTIFACT_URL}"
+        cd <<parameters.path>>/ && wget --header="Circle-Token: ${CIRCLE_TOKEN}" ${ARTIFACT_URL}
