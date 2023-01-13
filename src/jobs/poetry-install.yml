@@ -4,6 +4,10 @@ parameters:
     description: Directory containing the pyproject.toml
     type: string
     default: "."
+  no-ansi:
+    description: Disable ANSI output (might be required in certain edge cases with Poetry & CircleCI)
+    type: boolean
+    default: false
   no-dev:
     description: Do not install the development dependencies.
     type: boolean
@@ -104,6 +108,7 @@ steps:
               - v1-{{.Environment.CIRCLE_CACHE_NUMBER}}-poetry-install-cache-{{checksum "<<parameters.path>>/poetry.lock"}}
   - poetry-install:
       path: << parameters.path >>
+      no-ansi: << parameters.no-ansi >>
       no-dev: << parameters.no-dev >>
       no-root: << parameters.no-root >>
       dry-run: << parameters.dry-run >>
