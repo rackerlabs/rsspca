@@ -6,6 +6,10 @@ parameters:
     type: string
 
   # Optional
+  no-ansi:
+    description: Disable ANSI output (might be required in certain edge cases with Poetry & CircleCI)
+    type: boolean
+    default: false
   no-dev:
     description: Do not install the development dependencies.
     type: boolean
@@ -53,6 +57,7 @@ steps:
       working_directory: << parameters.path >>
       command: |
         poetry install \
+        <<# parameters.no-ansi >> --no-ansi<</ parameters.no-ansi >> \
         <<# parameters.no-dev >> --no-dev<</ parameters.no-dev >> \
         <<# parameters.no-root >> --no-root<</ parameters.no-root >> \
         <<# parameters.dry-run >> --dry-run<</ parameters.dry-run >> \
