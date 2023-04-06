@@ -44,6 +44,18 @@ parameters:
     default: src/
     description: >
       The relative difference between workspace-root and the working directory
+  template-resource-name:
+    type: string
+    default: LambdaFunction
+    description: >
+      Tha logical name under which the function to be built can be found.
+      It is used to construct the path to the SAM build artifacts in order
+      to generate the Lambda ZIP file.
+  store-artifact:
+    default: false
+    description: |
+      Store the build file as a job artifact?
+    type: boolean
 # In order to use "sam build --use-container" we need to use
 # a VM executor with docker installed locally.
 executor: <<parameters.executor>>
@@ -62,6 +74,16 @@ steps:
   - run: pip install aws-sam-cli
   - sam-build:
       path: << parameters.path >>
+  - when:
+      condition: <<parameters.store-artifact>>
+      steps:
+        - run:
+            name: Create ZIP file for Lambda function
+            command: zip -r <<parameters.workspace-root>><<parameters.template-resource-name>>.zip .
+            working_directory: <<parameters.workspace-root>><<parameters.workspace-root-to-working-directory>><<parameters.path>>/.aws-sam/build/<<parameters.template-resource-name>>/
+        - store_artifacts:
+            path: <<parameters.workspace-root>><<parameters.template-resource-name>>.zip
+            destination: <<parameters.template-resource-name>>.zip
   - when:
       condition: <<parameters.persist-to-workspace>>
       steps:
