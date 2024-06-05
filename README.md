@@ -9,5 +9,10 @@ https://circleci.com/account/api
 * Enter the Api token when asked for.
 * From the root execute publish-alpha.sh.
 
+## How to release an orb?
+Add a commit subject containing the text `[semver:patch|minor|major|skip]` while merging to master.
+e.g. [semver:patch] will cause a patch version to be published.
+
+
 
 
