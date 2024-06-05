@@ -1,0 +1,11 @@
+parameters:
+  docker_tag:
+    default: "3.10.14"
+    type: string
+  working_directory:
+    default: /home/circleci/src
+    type: string
+working_directory: << parameters.working_directory >>
+docker:
+  - image: cimg/python:<< parameters.docker_tag >>
+  - image: amazon/dynamodb-local
