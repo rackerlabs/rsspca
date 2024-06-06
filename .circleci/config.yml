@@ -4,13 +4,6 @@ orbs:
   orb-tools: circleci/orb-tools@10
   rsspca: rackerlabs/rsspca@<<pipeline.parameters.dev-orb-version>>
 
-orb_prep_jobs: &orb_prep_jobs
-  [
-    orb-tools/lint,
-    orb-tools/shellcheck,
-    orb-tools/pack
-  ]
-
 # Pipeline parameters
 parameters:
   # These pipeline parameters are required by the "trigger-integration-tests-workflow"
@@ -50,7 +43,10 @@ workflows:
       # if using Contexts, add your context below
       - orb-tools/publish-dev:
           orb-name: rackerlabs/rsspca
-          requires: *orb_prep_jobs
+          requires:
+            - orb-tools/lint
+            - orb-tools/shellcheck
+            - orb-tools/pack
 
       # trigger an integration workflow to test the
       # dev:${CIRCLE_SHA1:0:7} version of your orb
