@@ -1,7 +1,7 @@
 version: 2.1
 
 orbs:
-  orb-tools: circleci/orb-tools@9.1
+  orb-tools: circleci/orb-tools@10
   rsspca: rackerlabs/rsspca@<<pipeline.parameters.dev-orb-version>>
 
 orb_prep_jobs: &orb_prep_jobs
