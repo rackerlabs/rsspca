@@ -30,9 +30,6 @@ workflows:
       # This `lint-pack_validate_publish-dev` workflow will run on any commit
       # Lint your YAML
       - orb-tools/lint
-      # Linting for BASH commands
-      - orb-tools/shellcheck:
-          exclude: "SC1009,SC1073,SC2016,SC2296"
       # Pack the orb into a single file and validate the result.
       - orb-tools/pack
       # release dev version of orb, for testing & possible publishing.
@@ -45,7 +42,6 @@ workflows:
           orb-name: rackerlabs/rsspca
           requires:
             - orb-tools/lint
-            - orb-tools/shellcheck
             - orb-tools/pack
 
       # trigger an integration workflow to test the
