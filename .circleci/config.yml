@@ -3,6 +3,7 @@ version: 2.1
 orbs:
   orb-tools: circleci/orb-tools@10
   rsspca: rackerlabs/rsspca@<<pipeline.parameters.dev-orb-version>>
+  rsspca-exec: rackerlabs/rsspca@0.14.1
 
 # Pipeline parameters
 parameters:
@@ -17,7 +18,7 @@ parameters:
 
 jobs:
   integration-tests-for-your-orb:
-    executor: orb-tools/ubuntu
+    executor: rsspca-exec/machine-ubuntu
     steps:
       - checkout
     # Test your orb e.g.
