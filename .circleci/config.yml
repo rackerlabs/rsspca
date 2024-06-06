@@ -1,15 +1,9 @@
 version: 2.1
 
 orbs:
-  orb-tools: circleci/orb-tools@9.1
+  orb-tools: circleci/orb-tools@10
   rsspca: rackerlabs/rsspca@<<pipeline.parameters.dev-orb-version>>
-
-orb_prep_jobs: &orb_prep_jobs
-  [
-    orb-tools/lint,
-    orb-tools/shellcheck,
-    orb-tools/pack
-  ]
+  rsspca-exec: rackerlabs/rsspca@0.14.1
 
 # Pipeline parameters
 parameters:
@@ -24,22 +18,19 @@ parameters:
 
 jobs:
   integration-tests-for-your-orb:
-    executor: orb-tools/ubuntu
+    executor: rsspca-exec/machine-ubuntu
     steps:
       - checkout
     # Test your orb e.g.
     # - your-orb/your-orb-command
 
 workflows:
-  lint_pack-validate_publish-dev:
+  test-pack:
     unless: << pipeline.parameters.run-integration-tests >>
     jobs:
       # This `lint-pack_validate_publish-dev` workflow will run on any commit
       # Lint your YAML
       - orb-tools/lint
-      # Linting for BASH commands
-      - orb-tools/shellcheck:
-          exclude: "SC1009,SC1073,SC2016,SC2296"
       # Pack the orb into a single file and validate the result.
       - orb-tools/pack
       # release dev version of orb, for testing & possible publishing.
@@ -50,7 +41,9 @@ workflows:
       # if using Contexts, add your context below
       - orb-tools/publish-dev:
           orb-name: rackerlabs/rsspca
-          requires: *orb_prep_jobs
+          requires:
+            - orb-tools/lint
+            - orb-tools/pack
 
       # trigger an integration workflow to test the
       # dev:${CIRCLE_SHA1:0:7} version of your orb
@@ -63,7 +56,7 @@ workflows:
   # when the run-integration-tests pipeline parameter is set to true.
   # It is meant to be triggered by the "trigger-integration-tests-workflow"
   # job, and run tests on <your orb>@dev:${CIRCLE_SHA1:0:7}.
-  integration-tests_prod-release:
+  integration-test_deploy:
     when: << pipeline.parameters.run-integration-tests >>
     jobs:
       # your integration test jobs go here: essentially, run all your orb's
