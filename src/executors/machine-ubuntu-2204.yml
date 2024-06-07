@@ -1,0 +1,13 @@
+parameters:
+  tag:
+    type: string
+    default: 2024.01.2
+  working_directory:
+    type: string
+    default: /home/circleci/src
+  ubuntu-version:
+    type: string
+    default: "2204"
+machine:
+  image: ubuntu-<< parameters.ubuntu-version >>:<< parameters.tag >>
+working_directory: << parameters.working_directory >>
