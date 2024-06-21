@@ -52,11 +52,47 @@ parameters:
   user-deploy:
     type: boolean
     default: false
+  attach-workspace:
+    default: true
+    description: |
+      Boolean for whether or not to attach to an existing workspace. Default is
+      true.
+
+      If you have too many deploy jobs gated by a manual approval step, you
+      might end up with very slow deploy jobs due to CircleCI attaching every
+      single pre-existing workspace within the workflow prior to the approval
+      step.
+    type: boolean
+  use-artifacts:
+    type: boolean
+    default: false
+    description: |
+      You can instruct the deploy job to use an existing artifact from a
+      previous build job instead of creating a new one from scratch using
+      Terraform's Lambda module.
+
+      Please note that the CIRCLE_TOKEN environment variable must be set for
+      this to work properly.
+  build-job-name:
+    type: string
+    default: build-job-name
+    description: |
+      This must be set to the name of the job that built the artifact we would
+      like to deploy in this job.
 executor: << parameters.executor >>
 steps:
   - checkout
-  - attach_workspace:
-      at: /home/circleci
+  - when:
+      condition: <<parameters.attach-workspace>>
+      steps:
+        - attach_workspace:
+            at: /home/circleci
+  - when:
+      condition: <<parameters.use-artifacts>>
+      steps:
+        - download-artifact:
+            path: <<parameters.path>>
+            build-job-name: <<parameters.build-job-name>>
   - when:
       condition: <<parameters.fleece-run-to-env>>
       steps:
