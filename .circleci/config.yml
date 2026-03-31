@@ -78,7 +78,7 @@ workflows:
           publish-version-tag: true
           fail-if-semver-not-indicated: false
           bot-user: racker-autobot
-          ssh-fingerprints: "SHA256:0Qmlu2nMYT17t2Gj+0SyCjYP1qYVbz6pZc0jwlILOyc"
+          ssh-fingerprints: "SHA256:X5MWMrTYIeeo4385NgkU/K6jJj8OA0GgfgJCgT6bFRA"
           requires:
             - integration-tests-for-your-orb
           filters:
